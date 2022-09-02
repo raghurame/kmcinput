@@ -4,34 +4,31 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <time.h>
 #include "kmclib.h"
 
 int countDihedrals (FILE *inputDihedral)
 {
-	rewind (inputDihedral);
 	char waste[5000];
 	int nDihedrals = 0;
 
-	for (int i = 0; i < 4; ++i)
-		fgets (waste, 3000, inputDihedral);
+	for (int i = 0; i < 4; ++i) {
+		fgets (waste, 3000, inputDihedral); }
 
-	sscanf (waste, "%d", &nDihedrals);
-	rewind (inputDihedral);
+	sscanf (waste, "%d\n", &nDihedrals);
 
 	return nDihedrals;
 }
 
 int countAtoms (FILE *inputDump)
 {
-	rewind (inputDump);
 	char waste[5000];
 	int nAtoms = 0;
 
 	for (int i = 0; i < 4; ++i)
 		fgets (waste, 3000, inputDump);
 
-	sscanf (waste, "%d", &nAtoms);
-	rewind (inputDump);
+	sscanf (waste, "%d\n", &nAtoms);
 
 	return nAtoms;
 }
