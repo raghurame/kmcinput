@@ -16,8 +16,20 @@ int main(int argc, char const *argv[])
 	}
 
 	FILE *inputDump, *inputDihedral, *outputJumps, *configJumps, *configJumps2;
-	inputDump = fopen (argv[1], "r");
-	inputDihedral = fopen (argv[2], "r");
+	char *pipeString1, *pipeString2;
+	pipeString1 = (char *) malloc (500 * sizeof (char));
+	pipeString2 = (char *) malloc (500 * sizeof (char));
+
+	if (strstr (".xz", argv[1])) {
+		snprintf (pipeString1, 500, "xzcat %s", argv[1]); inputDump = popen (pipeString1, "r"); }
+	else {
+		inputDump = fopen (argv[1], "r"); }
+
+	if (strstr (".xz", argv[2]))
+	{
+		snprintf (pipeString2, 500, "xzcat %s", argv[2]); inputDihedral = fopen (pipeString2, "r");
+	}
+
 	outputJumps = fopen ("possibleJumps.csv", "w");
 	configJumps = fopen ("configJumps.csv", "w");
 	configJumps2 = fopen ("configJumps2.csv", "w");
@@ -26,6 +38,20 @@ int main(int argc, char const *argv[])
 	int nDihedrals = countDihedrals (inputDihedral), nAtoms = countAtoms (inputDump), isEOF_dump = 0, isEOF_dihedral = 0, init = 0, nBackboneDihedrals, nTimeframes = 0, nLattice = 0, maxtf = atoi (argv[3]);
 	printf("%d atoms detected...\n", nAtoms);
 	printf("%d dihedrals detected...\n", nDihedrals);
+
+	if (strstr (".xz", argv[1])) {
+		pclose (inputDump);
+		FILE *inputDump;
+		inputDump = popen (pipeString1, "r"); }
+	else {
+		rewind (inputDump); }
+
+	if (strstr (".xz", argv[2])) {
+		pclose (inputDihedral);
+		FILE *inputDihedral;
+		inputDihedral = popen (pipeString2, "r"); }
+	else {
+		rewind (inputDihedral); }
 
 	int transition_CR, transition_CL, transition_CC, transition_CM;
 	int transition_RR, transition_RL, transition_RC, transition_RM;
