@@ -9,7 +9,7 @@
 
 int main(int argc, char const *argv[])
 {
-	if (argc == 1)
+	if (argc != 4)
 	{
 		printf("\nINSTRUCTIONS:\n~~~~~~~~~~~~~\n\nargv[0] = program\nargv[1] = input dump file name\nargv[2] = input dihedral file name\nargv[3] = max timeframes to run\n\n");
 		exit(1);
